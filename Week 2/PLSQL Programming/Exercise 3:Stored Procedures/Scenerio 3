@@ -1,0 +1,46 @@
+CREATE OR REPLACE PROCEDURE TransferFunds (
+    p_from_account_id IN NUMBER,
+    p_to_account_id IN NUMBER,
+    p_amount IN NUMBER
+)
+IS
+    v_from_balance NUMBER(12,2);
+    v_to_balance NUMBER(12,2);
+BEGIN
+    IF p_amount <= 0 THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Transfer amount must be positive');
+    END IF;
+    IF p_from_account_id = p_to_account_id THEN
+        RAISE_APPLICATION_ERROR(-20003, 'Source and destination accounts must be different');
+    END IF;
+    SELECT Balance INTO v_from_balance
+    FROM Accounts
+    WHERE AccountID = p_from_account_id
+    FOR UPDATE;
+    IF v_from_balance < p_amount THEN
+        RAISE_APPLICATION_ERROR(-20004, 'Insufficient balance in source account');
+    END IF;
+    SELECT Balance INTO v_to_balance
+    FROM Accounts
+    WHERE AccountID = p_to_account_id
+    FOR UPDATE;
+    UPDATE Accounts
+    SET Balance = Balance - p_amount
+    WHERE AccountID = p_from_account_id;
+    UPDATE Accounts
+    SET Balance = Balance + p_amount
+    WHERE AccountID = p_to_account_id;
+    DBMS_OUTPUT.PUT_LINE(
+        'Transferred ' || TO_CHAR(p_amount, 'FM999999999.99') ||
+        ' from account ' || p_from_account_id || 
+        ' to account ' || p_to_account_id
+    );
+
+    COMMIT;
+END;
+/
+BEGIN
+  TransferFunds(1001, 1002, 1000);
+END;
+/
+
