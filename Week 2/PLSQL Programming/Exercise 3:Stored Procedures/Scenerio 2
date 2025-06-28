@@ -1,0 +1,37 @@
+CREATE OR REPLACE PROCEDURE UpdateEmployeeBonus(
+    p_department_id IN NUMBER,
+    p_bonus_percentage IN NUMBER
+)
+IS
+    CURSOR employee_cursor IS
+        SELECT EmployeeID, Salary
+        FROM Employees
+        WHERE DepartmentID = p_department_id
+        FOR UPDATE;
+
+    v_new_salary NUMBER(10,2);
+    v_bonus_factor NUMBER(5,2);
+BEGIN
+    IF p_bonus_percentage < 0 OR p_bonus_percentage > 100 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Bonus percentage must be between 0 and 100');
+    END IF;
+    v_bonus_factor := 1 + (p_bonus_percentage / 100);
+    FOR employee_rec IN employee_cursor LOOP
+        v_new_salary := employee_rec.Salary * v_bonus_factor;
+        UPDATE Employees
+        SET Salary = v_new_salary
+        WHERE CURRENT OF employee_cursor;
+        DBMS_OUTPUT.PUT_LINE(
+            'Employee ID: ' || employee_rec.EmployeeID || 
+            ' - New Salary: ' || TO_CHAR(v_new_salary, 'FM999999999.99')
+        );
+    END LOOP;
+
+    COMMIT;
+END;
+/
+
+BEGIN
+  UpdateEmployeeBonus(101, 10); 
+END;
+/
