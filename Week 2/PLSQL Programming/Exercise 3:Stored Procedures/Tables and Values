@@ -1,0 +1,28 @@
+CREATE TABLE SavingsAccounts (
+  AccountID NUMBER PRIMARY KEY,
+  CustomerID NUMBER,
+  Balance NUMBER(12,2)
+);
+
+CREATE TABLE Employees (
+  EmployeeID  NUMBER PRIMARY KEY,
+  Name VARCHAR2(50),
+  DepartmentID NUMBER,
+  Salary NUMBER(10,2)
+);
+
+CREATE TABLE Accounts (
+  AccountID NUMBER PRIMARY KEY,
+  CustomerID NUMBER,
+  Balance NUMBER(12,2)
+);
+
+INSERT INTO SavingsAccounts VALUES (2001, 1, 10000);
+INSERT INTO SavingsAccounts VALUES (2002, 2, 15000);
+
+INSERT INTO Employees VALUES (1, 'Ramesh', 101, 40000);
+INSERT INTO Employees VALUES (2, 'Sita', 101, 42000);
+INSERT INTO Employees VALUES (3, 'John', 102, 39000);
+
+INSERT INTO Accounts VALUES (1001, 1, 8000);
+INSERT INTO Accounts VALUES (1002, 1, 6000);
