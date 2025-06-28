@@ -1,0 +1,29 @@
+
+CREATE OR REPLACE PROCEDURE ProcessMonthlyInterest
+IS
+    CURSOR account_cursor IS
+        SELECT AccountID, Balance
+        FROM SavingsAccounts
+        FOR UPDATE;
+
+    v_new_balance NUMBER(12,2);
+    v_interest_rate CONSTANT NUMBER(5,2) := 0.01;
+BEGIN
+    FOR account_rec IN account_cursor LOOP
+        v_new_balance := account_rec.Balance * (1 + v_interest_rate);
+        UPDATE SavingsAccounts
+        SET Balance = v_new_balance
+        WHERE CURRENT OF account_cursor;
+        DBMS_OUTPUT.PUT_LINE(
+            'Account ID: ' || account_rec.AccountID || 
+            ' - New Balance: ' || TO_CHAR(v_new_balance, 'FM9999999990.00')
+        );
+    END LOOP;
+
+    COMMIT;
+END;
+/
+BEGIN
+  ProcessMonthlyInterest;
+END;
+/
