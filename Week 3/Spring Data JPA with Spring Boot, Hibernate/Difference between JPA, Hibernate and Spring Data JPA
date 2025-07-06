@@ -1,0 +1,32 @@
+(1)Java Persistence API (JPA):
+	i)Standardized API for persistence.
+  ii)Needs a runtime implementation (like Hibernate).
+  iii)Configured via persistence.xml or annotations.
+  iv)Developers manage persistence logic manually.
+  v)Primarily uses JPQL.
+  vi)Explicit control using EntityManager.getTransaction().
+  vii)Integrates with Spring using basic JPA setup.
+  viii)Moderate — focused on API standards.
+  ix)	Supported by vendors implementing JPA.
+
+(2)	Hibernate:
+  i)Full-featured ORM tool that implements JPA.
+  ii)Can run independently or serve as a JPA provider.
+  iii)Uses hibernate.cfg.xml, annotations, or programmatic config.
+  iv)Offers APIs like HQL and Criteria for more expressive queries.
+  v)Supports JPQL, Hibernate-specific HQL, and native SQL.
+  vi)Works directly with Session or EntityManager.
+  vii)Requires manual wiring for Spring integration.
+  viii)Higher — includes JPA plus Hibernate-specific details.
+  ix)Strong ecosystem with books, forums, and tools.
+
+(3)	Spring Data JPA:
+   i)Framework extension that enhances JPA usage in Spring.
+   ii)Relies on a JPA provider underneath (commonly Hibernate).
+   iii)Uses Spring Boot auto-configuration or Java-based config.
+   iv)Reduces boilerplate through auto-implemented repositories.
+   v)Supports JPQL, derived query methods, and annotated native queries.
+   vi)Typically handled by Spring’s @Transactional abstraction.
+   vii)Designed to work seamlessly within the Spring Framework.
+   viii)Lower — simplified through Spring conventions and tooling.
+   ix)Extensive Spring ecosystem, tutorials, and community support.
